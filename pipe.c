@@ -17,9 +17,10 @@ int main () {
     // Child process
     // reading number
     close(fds[WRITE]);
-    int *i;
-    read(fds[READ], i, sizeof(i));
-
+    int i;
+    read(fds[READ], &i, sizeof(i));
+    printf("CHILD DOING MATHS ON: [%d]\n", i);
+    
     // sending back number
     close(fds2[READ]);
     int i2 = i * 5;
@@ -27,16 +28,19 @@ int main () {
   } else {
     // Parent process
     // writing to child
+    
     close(fds[READ]);
-    int *i;
-    &i = 15;
+    int i = 15;
+    
+    printf("PARENT SENDING: [%d]\n", i);
+    
     write(fds[WRITE], &i, sizeof(i));
 
     // reading new number
     close(fds2[WRITE]);
     int i2;
-    read(fds2[READ], i2, sizeof(i2));
-    printf("parent received: [%d]\n", i2);
+    read(fds2[READ], &i2, sizeof(i2));
+    printf("PARENT RECIEVED: [%d]\n", i2);
   }
   
 }
